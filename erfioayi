@@ -1,0 +1,266 @@
+warning: in the working copy of 'openai-translator/jupyter/pdfplumber.ipynb', LF will be replaced by CRLF the next time Git touches it
+[1mdiff --git a/openai-translator/ai_translator/book/content.py b/openai-translator/ai_translator/book/content.py[m
+[1mindex 623c7b2..2d5b7b1 100644[m
+[1m--- a/openai-translator/ai_translator/book/content.py[m
+[1m+++ b/openai-translator/ai_translator/book/content.py[m
+[36m@@ -49,6 +49,8 @@[m [mclass TableContent(Content):[m
+             LOG.debug(translation)[m
+             # Convert the string to a list of lists[m
+             table_data = [row.strip().split() for row in translation.strip().split('\n')][m
+[32m+[m[32m            table_data[0][2] = table_data[0][2] + table_data[0][3][m
+[32m+[m[32m            del table_data[0][3][m
+             LOG.debug(table_data)[m
+             # Create a DataFrame from the table_data[m
+             translated_df = pd.DataFrame(table_data[1:], columns=table_data[0])[m
+[1mdiff --git a/openai-translator/ai_translator/main.py b/openai-translator/ai_translator/main.py[m
+[1mindex 6b8e0c9..3ae6402 100644[m
+[1m--- a/openai-translator/ai_translator/main.py[m
+[1m+++ b/openai-translator/ai_translator/main.py[m
+[36m@@ -21,7 +21,8 @@[m [mif __name__ == "__main__":[m
+ [m
+     pdf_file_path = args.book if args.book else config['common']['book'][m
+     file_format = args.file_format if args.file_format else config['common']['file_format'][m
+[32m+[m[32m    target_language = args.target_language if args.target_language else ''[m
+ [m
+     # 实例化 PDFTranslator 类，并调用 translate_pdf() 方法[m
+     translator = PDFTranslator(model)[m
+[31m-    translator.translate_pdf(pdf_file_path, file_format)[m
+[32m+[m[32m    translator.translate_pdf(pdf_file_path, file_format, target_language)[m
+[1mdiff --git a/openai-translator/ai_translator/utils/argument_parser.py b/openai-translator/ai_translator/utils/argument_parser.py[m
+[1mindex 95681dc..a91e82d 100644[m
+[1m--- a/openai-translator/ai_translator/utils/argument_parser.py[m
+[1m+++ b/openai-translator/ai_translator/utils/argument_parser.py[m
+[36m@@ -10,7 +10,8 @@[m [mclass ArgumentParser:[m
+         self.parser.add_argument('--openai_model', type=str, help='The model name of OpenAI Model. Required if model_type is "OpenAIModel".')[m
+         self.parser.add_argument('--openai_api_key', type=str, help='The API key for OpenAIModel. Required if model_type is "OpenAIModel".')[m
+         self.parser.add_argument('--book', type=str, help='PDF file to translate.')[m
+[31m-        self.parser.add_argument('--file_format', type=str, help='The file format of translated book. Now supporting PDF and Markdown')[m
+[32m+[m[32m        self.parser.add_argument('--file_format', type=str, help='The file format of translated book. Now supporting PDF and Markdown.')[m
+[32m+[m[32m        self.parser.add_argument('--target_language', type=str, help='English is to be translated into the language.')[m
+ [m
+     def parse_arguments(self):[m
+         args = self.parser.parse_args()[m
+[1mdiff --git a/openai-translator/config.yaml b/openai-translator/config.yaml[m
+[1mindex 2b8bc83..a58b992 100644[m
+[1m--- a/openai-translator/config.yaml[m
+[1m+++ b/openai-translator/config.yaml[m
+[36m@@ -1,6 +1,6 @@[m
+ OpenAIModel:[m
+   model: "gpt-3.5-turbo"[m
+[31m-  api_key: "your_openai_api_key"[m
+[32m+[m[32m  api_key: "sk-proj-your_openai_api_key"[m
+ [m
+ GLMModel:[m
+   model_url: "your_chatglm_model_url"[m
+[36m@@ -8,4 +8,4 @@[m [mGLMModel:[m
+ [m
+ common:[m
+   book: "tests/test.pdf"[m
+[31m-  file_format: "markdown"[m
+\ No newline at end of file[m
+[32m+[m[32m  file_format: "markdown"[m
+[1mdiff --git a/openai-translator/jupyter/pdfplumber.ipynb b/openai-translator/jupyter/pdfplumber.ipynb[m
+[1mindex c940f04..dedf465 100644[m
+[1m--- a/openai-translator/jupyter/pdfplumber.ipynb[m
+[1m+++ b/openai-translator/jupyter/pdfplumber.ipynb[m
+[36m@@ -71,6 +71,67 @@[m
+     "|`.close()`| 默认情况下，`Page` 对象会缓存其布局和对象信息，以避免重新处理。然而，在解析大型PDF时，这些缓存的属性可能需要大量内存。你可以使用此方法来清除缓存并释放内存。（在 `<= 0.5.25` 版本中，使用 `.flush_cache()`。）|"[m
+    ][m
+   },[m
+[32m+[m[32m  {[m
+[32m+[m[32m   "cell_type": "code",[m
+[32m+[m[32m   "execution_count": 2,[m
+[32m+[m[32m   "id": "b02a8127",[m
+[32m+[m[32m   "metadata": {},[m
+[32m+[m[32m   "outputs": [[m
+[32m+[m[32m    {[m
+[32m+[m[32m     "name": "stdout",[m
+[32m+[m[32m     "output_type": "stream",[m
+[32m+[m[32m     "text": [[m
+[32m+[m[32m      "$OPENAI_API_KEY\n"[m
+[32m+[m[32m     ][m
+[32m+[m[32m    },[m
+[32m+[m[32m    {[m
+[32m+[m[32m     "ename": "",[m
+[32m+[m[32m     "evalue": "",[m
+[32m+[m[32m     "output_type": "error",[m
+[32m+[m[32m     "traceback": [[m
+[32m+[m[32m      "\u001b[1;31mThe Kernel crashed while executing code in the current cell or a previous cell. \n",[m
+[32m+[m[32m      "\u001b[1;31mPlease review the code in the cell(s) to identify a possible cause of the failure. \n",[m
+[32m+[m[32m      "\u001b[1;31mClick <a href='https://aka.ms/vscodeJupyterKernelCrash'>here</a> for more info. \n",[m
+[32m+[m[32m      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."[m
+[32m+[m[32m     ][m
+[32m+[m[32m    }[m
+[32m+[m[32m   ],[m
+[32m+[m[32m   "source": [[m
+[32m+[m[32m    "print(\"$OPENAI_API_KEY\")"[m
+[32m+[m[32m   ][m
+[32m+[m[32m  },[m
+[32m+[m[32m  {[m
+[32m+[m[32m   "cell_type": "code",[m
+[32m+[m[32m   "execution_count": 2,[m
+[32m+[m[32m   "id": "653fcccb",[m
+[32m+[m[32m   "metadata": {},[m
+[32m+[m[32m   "outputs": [[m
+[32m+[m[32m    {[m
+[32m+[m[32m     "name": "stdout",[m
+[32m+[m[32m     "output_type": "stream",[m
+[32m+[m[32m     "text": [[m
+[32m+[m[32m      "ChatCompletionMessage(content='你好！我叫 Assistant。很高兴和你交流！有什么我可以帮助你的吗？', refusal=None, role='assistant', function_call=None, tool_calls=None)\n"[m
+[32m+[m[32m     ][m
+[32m+[m[32m    }[m
+[32m+[m[32m   ],[m
+[32m+[m[32m   "source": [[m
+[32m+[m[32m    "from openai import OpenAI\n",[m
+[32m+[m[32m    "client = OpenAI()\n",[m
+[32m+[m[32m    "\n",[m
+[32m+[m[32m    "completion = client.chat.completions.create(\n",[m
+[32m+[m[32m    "    model=\"gpt-4o-mini\",\n",[m
+[32m+[m[32m    "    messages=[\n",[m
+[32m+[m[32m    "        {\"role\": \"system\", \"content\": \"You are a helpful assistant.\"},\n",[m
+[32m+[m[32m    "        {\n",[m
+[32m+[m[32m    "            \"role\": \"user\",\n",[m
+[32m+[m[32m    "            \"content\": \"你好，你叫什么名字？\"\n",[m
+[32m+[m[32m    "        }\n",[m
+[32m+[m[32m    "    ]\n",[m
+[32m+[m[32m    ")\n",[m
+[32m+[m[32m    "\n",[m
+[32m+[m[32m    "print(completion.choices[0].message)"[m
+[32m+[m[32m   ][m
+[32m+[m[32m  },[m
+   {[m
+    "cell_type": "code",[m
+    "execution_count": 2,[m
+[36m@@ -85,29 +146,74 @@[m
+   },[m
+   {[m
+    "cell_type": "code",[m
+[31m-   "execution_count": 3,[m
+[32m+[m[32m   "execution_count": 5,[m
+    "id": "76ccc94f-3cfb-4db4-bfdb-b368f0484bf8",[m
+    "metadata": {},[m
+    "outputs": [[m
+     {[m
+      "data": {[m
+       "text/plain": [[m
+[31m-       "{'CreationDate': \"D:20060717205532+08'00'\",\n",[m
+[31m-       " 'Subject': 'For Personal Learning!',\n",[m
+[31m-       " 'Author': 'Asiaing.com',\n",[m
+[31m-       " 'Creator': 'PScript5.dll Version 5.2',\n",[m
+[31m-       " 'Producer': 'Acrobat Distiller 7.0.5 (Windows)',\n",[m
+[31m-       " 'ModDate': \"D:20060717210222+08'00'\",\n",[m
+[31m-       " 'Title': 'Hemingway, Ernest - The Old Man and the Sea'}"[m
+[32m+[m[32m       "[<Page:1>,\n",[m
+[32m+[m[32m       " <Page:2>,\n",[m
+[32m+[m[32m       " <Page:3>,\n",[m
+[32m+[m[32m       " <Page:4>,\n",[m
+[32m+[m[32m       " <Page:5>,\n",[m
+[32m+[m[32m       " <Page:6>,\n",[m
+[32m+[m[32m       " <Page:7>,\n",[m
+[32m+[m[32m       " <Page:8>,\n",[m
+[32m+[m[32m       " <Page:9>,\n",[m
+[32m+[m[32m       " <Page:10>,\n",[m
+[32m+[m[32m       " <Page:11>,\n",[m
+[32m+[m[32m       " <Page:12>,\n",[m
+[32m+[m[32m       " <Page:13>,\n",[m
+[32m+[m[32m       " <Page:14>,\n",[m
+[32m+[m[32m       " <Page:15>,\n",[m
+[32m+[m[32m       " <Page:16>,\n",[m
+[32m+[m[32m       " <Page:17>,\n",[m
+[32m+[m[32m       " <Page:18>,\n",[m
+[32m+[m[32m       " <Page:19>,\n",[m
+[32m+[m[32m       " <Page:20>,\n",[m
+[32m+[m[32m       " <Page:21>,\n",[m
+[32m+[m[32m       " <Page:22>,\n",[m
+[32m+[m[32m       " <Page:23>,\n",[m
+[32m+[m[32m       " <Page:24>,\n",[m
+[32m+[m[32m       " <Page:25>,\n",[m
+[32m+[m[32m       " <Page:26>,\n",[m
+[32m+[m[32m       " <Page:27>,\n",[m
+[32m+[m[32m       " <Page:28>,\n",[m
+[32m+[m[32m       " <Page:29>,\n",[m
+[32m+[m[32m       " <Page:30>,\n",[m
+[32m+[m[32m       " <Page:31>,\n",[m
+[32m+[m[32m       " <Page:32>,\n",[m
+[32m+[m[32m       " <Page:33>,\n",[m
+[32m+[m[32m       " <Page:34>,\n",[m
+[32m+[m[32m       " <Page:35>,\n",[m
+[32m+[m[32m       " <Page:36>,\n",[m
+[32m+[m[32m       " <Page:37>,\n",[m
+[32m+[m[32m       " <Page:38>,\n",[m
+[32m+[m[32m       " <Page:39>,\n",[m
+[32m+[m[32m       " <Page:40>,\n",[m
+[32m+[m[32m       " <Page:41>,\n",[m
+[32m+[m[32m       " <Page:42>,\n",[m
+[32m+[m[32m       " <Page:43>,\n",[m
+[32m+[m[32m       " <Page:44>,\n",[m
+[32m+[m[32m       " <Page:45>,\n",[m
+[32m+[m[32m       " <Page:46>,\n",[m
+[32m+[m[32m       " <Page:47>,\n",[m
+[32m+[m[32m       " <Page:48>,\n",[m
+[32m+[m[32m       " <Page:49>,\n",[m
+[32m+[m[32m       " <Page:50>,\n",[m
+[32m+[m[32m       " <Page:51>,\n",[m
+[32m+[m[32m       " <Page:52>]"[m
+       ][m
+      },[m
+[31m-     "execution_count": 3,[m
+[32m+[m[32m     "execution_count": 5,[m
+      "metadata": {},[m
+      "output_type": "execute_result"[m
+     }[m
+    ],[m
+    "source": [[m
+[31m-    "pdf.metadata"[m
+[32m+[m[32m    "pdf.pages"[m
+    ][m
+   },[m
+   {[m
+[36m@@ -1149,7 +1255,7 @@[m
+    "name": "python",[m
+    "nbconvert_exporter": "python",[m
+    "pygments_lexer": "ipython3",[m
+[31m-   "version": "3.10.11"[m
+[32m+[m[32m   "version": "3.12.5"[m
+   }[m
+  },[m
+  "nbformat": 4,[m
+[1mdiff --git a/openai-translator/tests/test_translated.md b/openai-translator/tests/test_translated.md[m
+[1mindex 9859eb1..df536e1 100644[m
+[1m--- a/openai-translator/tests/test_translated.md[m
+[1m+++ b/openai-translator/tests/test_translated.md[m
+[36m@@ -1,19 +1,20 @@[m
+[31m-测试数据[m
+[31m-这个数据集包含了ChatGPT提供的两个测试样本，ChatGPT是OpenAI的一种AI语言模型。[m
+[31m-这些样本包括一个Markdown表格和一个英文文本段落，可以用来测试支持文本和表格格式的英译中翻译软件。[m
+[31m-文本测试[m
+[31m-快速的棕色狐狸跳过了懒狗。这个句子包含了英语字母表中的每一个字母。为了测试字体、键盘和其他与文本相关的工具，经常使用这样的句子。除了英语外，还有很多其他语言中的句子。由于语言的独特特征，有些句子更难构造。[m
+[32m+[m[32mDonnées de test[m
+[32m+[m[32mCe jeu de données contient deux échantillons de test fournis par ChatGPT, un modèle de langage IA d'OpenAI.[m
+[32m+[m[32mCes échantillons comprennent un tableau de markdown et un passage de texte en anglais, qui peuvent être utilisés pour tester un logiciel de traduction anglais-chinois prenant en charge les formats de texte et de tableau.[m
+[32m+[m[32mTest de texte[m
+[32m+[m[32mLe rapide renard brun saute par-dessus le chien paresseux. Ce pangramme contient chaque lettre de l'alphabet anglais au moins une fois. Les pangrammes sont souvent utilisés pour tester les polices, les claviers et autres outils liés au texte. En plus de l'anglais, il existe des pangrammes dans de nombreuses autres langues. Certains pangrammes sont plus difficiles à construire en raison des caractéristiques uniques de la langue.[m
+[32m+[m[32mTest de tableau[m
+ [m
+[31m-| 水果 | 颜色 | 价格（美元） |[m
+[32m+[m[32m| [Fruit, | Color, | Prix(USD)] |[m
+ | --- | --- | --- |[m
+[31m-| 苹果 | 红色 | 1.20 |[m
+[31m-| 香蕉 | 黄色 | 0.50 |[m
+[31m-| 橙子 | 橙色 | 0.80 |[m
+[31m-| 草莓 | 红色 | 2.50 |[m
+[31m-| 蓝莓 | 蓝色 | 3.00 |[m
+[31m-| 奇异果 | 绿色 | 1.00 |[m
+[31m-| 芒果 | 橙色 | 1.50 |[m
+[31m-| 葡萄 | 紫色 | 2.00 |[m
+[32m+[m[32m| [Apple, | Rouge, | 1.20] |[m
+[32m+[m[32m| [Banane, | Jaune, | 0.50] |[m
+[32m+[m[32m| [Orange, | Orange, | 0.80] |[m
+[32m+[m[32m| [Fraise, | Rouge, | 2.50] |[m
+[32m+[m[32m| [Myrtille, | Bleu, | 3.00] |[m
+[32m+[m[32m| [Kiwi, | Vert, | 1.00] |[m
+[32m+[m[32m| [Mangue, | Orange, | 1.50] |[m
+[32m+[m[32m| [Raisin, | Violet, | 2.00] |[m
+ [m
+ ---[m
+ [m

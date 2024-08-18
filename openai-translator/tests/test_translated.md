@@ -1,19 +1,9 @@
-测试数据
-这个数据集包含了ChatGPT提供的两个测试样本，ChatGPT是OpenAI的一种AI语言模型。
-这些样本包括一个Markdown表格和一个英文文本段落，可以用来测试支持文本和表格格式的英译中翻译软件。
-文本测试
-快速的棕色狐狸跳过了懒狗。这个句子包含了英语字母表中的每一个字母。为了测试字体、键盘和其他与文本相关的工具，经常使用这样的句子。除了英语外，还有很多其他语言中的句子。由于语言的独特特征，有些句子更难构造。
-
-| 水果 | 颜色 | 价格（美元） |
-| --- | --- | --- |
-| 苹果 | 红色 | 1.20 |
-| 香蕉 | 黄色 | 0.50 |
-| 橙子 | 橙色 | 0.80 |
-| 草莓 | 红色 | 2.50 |
-| 蓝莓 | 蓝色 | 3.00 |
-| 奇异果 | 绿色 | 1.00 |
-| 芒果 | 橙色 | 1.50 |
-| 葡萄 | 紫色 | 2.00 |
+Données de test
+Ce jeu de données contient deux échantillons de test fournis par ChatGPT, un modèle de langue IA d'OpenAI.
+Ces échantillons comprennent un tableau Markdown et un passage de texte en anglais, qui peuvent être utilisés pour tester un logiciel de traduction anglais-chinois prenant en charge les formats de texte et de tableau.
+Test de texte
+Le rapide renard brun saute par-dessus le chien paresseux. Ce pangramme contient chaque lettre de l'alphabet anglais au moins une fois. Les pangrammes sont souvent utilisés pour tester les polices, les claviers et autres outils liés au texte. En plus de l'anglais, il existe des pangrammes dans de nombreuses autres langues. Certains pangrammes sont plus difficiles à construire en raison des caractéristiques uniques de la langue.
+Test de tableau
 
 ---
 
